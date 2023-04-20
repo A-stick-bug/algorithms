@@ -16,20 +16,28 @@ def shortest_path(start, end, graph):
     processed = set()
     node = find_lowest_cost_node()
 
-    while node is not None and node != end:
+    # to stop once the end node is reached, remove to test shortest distance to all points
+    if node == end:
+        return costs[end]
+
+    while node is not None:
         cost = costs[node]
         neighbors = graph[node]
-        for n in neighbors.keys():
-            new_cost = cost + neighbors[n]
 
-            if costs[n] > new_cost:
-                costs[n] = new_cost
-                parents[n] = node
+        # Add a check to ensure neighbors is not None
+        if neighbors is not None:
+            for n in neighbors.keys():
+                new_cost = cost + neighbors[n]
+
+                if costs[n] > new_cost:
+                    costs[n] = new_cost
+                    parents[n] = node
         processed.add(node)
         node = find_lowest_cost_node()
     return costs
 
 
+# example to test code
 graph = {"start": {"a": 6, "b": 2},
          "a": {"fin": 1},
          "b": {"a": 3, "fin": 5},
